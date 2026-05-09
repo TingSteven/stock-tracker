@@ -25,16 +25,22 @@ pub async fn main(req: Request, env: Env, _ctx: Context) -> Result<Response> {
         return Ok(resp);
     }
 
-    let mut resp = Router::new()
-        .get_async("/api/stock/:symbol", stocks::get_stock)
-        .get_async("/api/stock/:symbol/history", stocks::get_history)
-        .get_async("/api/sectors", sectors::get_sectors)
-        .get_async("/api/flow/unusual-volume", flow::get_unusual_volume)
-        .get_async("/api/flow/top-turnover", flow::get_top_turnover)
-        .get_async("/api/screener", flow::get_screener)
-        .run(req, env)
-        .await?;
+    let path = req.path();
 
-    add_cors(&mut resp)?;
-    Ok(resp)
+    if path.starts_with("/api/") {
+        let mut resp = Router::new()
+            .get_async("/api/stock/:symbol", stocks::get_stock)
+            .get_async("/api/stock/:symbol/history", stocks::get_history)
+            .get_async("/api/sectors", sectors::get_sectors)
+            .get_async("/api/flow/unusual-volume", flow::get_unusual_volume)
+            .get_async("/api/flow/top-turnover", flow::get_top_turnover)
+            .get_async("/api/screener", flow::get_screener)
+            .run(req, env)
+            .await?;
+        add_cors(&mut resp)?;
+        Ok(resp)
+    } else {
+        let url = req.url()?.to_string();
+        env.service("ASSETS")?.fetch(url, None).await
+    }
 }
