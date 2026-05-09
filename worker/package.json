@@ -1,0 +1,13 @@
+{
+  "name": "stock-tracker-worker",
+  "private": true,
+  "scripts": {
+    "build": "worker-build --release",
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev"
+  },
+  "devDependencies": {
+    "worker-build": "^0.1.9",
+    "wrangler": "^3.0.0"
+  }
+}

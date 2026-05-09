@@ -1,0 +1,27 @@
+# Rust
+target/
+Cargo.lock
+*.pdb
+
+# Node / frontend
+node_modules/
+dist/
+.env
+.env.local
+.env.*.local
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Cloudflare Worker build output
+worker/build/
+
+# Wrangler
+.wrangler/
